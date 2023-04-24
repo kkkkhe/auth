@@ -1,5 +1,5 @@
 export enum Routes {
-  User = 'user',
+  Users = 'users',
 }
 
 export enum Services {
