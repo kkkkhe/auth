@@ -11,7 +11,7 @@ datasource db {
 }
 
 
-model users {
+model user {
   id Int @id @default(autoincrement())
   name String @db.VarChar(20)
   passHash String @db.VarChar(30)
