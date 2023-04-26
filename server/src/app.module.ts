@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from './prismaConfig/prisma.service';
-import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.modul';
@@ -10,7 +9,7 @@ import { TokenModule } from './token/token.module';
     ConfigModule.forRoot({ envFilePath: './.env' }),
     UserModule,
     AuthModule,
-    TokenModule
+    TokenModule,
   ],
   providers: [PrismaService],
 })

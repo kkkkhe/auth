@@ -1,15 +1,5 @@
 import { z } from 'zod';
-import {createZodDto} from "nestjs-zod";
-export function authResponse(data) {
-  return {
-    data: {
-      id: data.user.id,
-      name: data.user.name,
-      email: data.user.email,
-    },
-    access_token: data.access_token,
-  };
-}
+import { createZodDto } from 'nestjs-zod';
 const AuthResponseSchema = z.object({
   user: z.object({
     id: z.number(),
@@ -19,7 +9,7 @@ const AuthResponseSchema = z.object({
       .max(20, { message: 'Must be 20 or less characters long' }),
     email: z.string().email({ message: 'Invalid email address' }),
   }),
-  access_token: z.string()
+  access_token: z.string(),
 });
 
 export class AuthResponseDto extends createZodDto(AuthResponseSchema) {}

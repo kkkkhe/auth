@@ -1,9 +1,13 @@
+import {RouterProvider} from 'atomic-router-react'
+import {router} from "@/app/router.config";
+import {RouterView} from "@/pages";
+
 function App() {
 
   return (
-      <a href={'https://www.npmjs.com/package/jsonwebtoken'}>
-          <a href="https://www.npmjs.com/package/nestjs-zod"> Click</a>
-      </a>
+      <RouterProvider router={router}>
+          <RouterView/>
+      </RouterProvider>
   )
 }
 
