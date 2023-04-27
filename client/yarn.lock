@@ -337,6 +337,11 @@
   resolved "https://registry.yarnpkg.com/@farfetched/core/-/core-0.8.10.tgz#5d1a826e80f00e9a1282e66ce40898a57b630e62"
   integrity sha512-Ffy8yt0yh967zjFqaXVRPV6UtchjyenLYrYhkui7Evymt7Ylx6xDa9B0om78QMHVSYnxn/1HvmXUze4FVxFb6A==
 
+"@farfetched/zod@^0.8.10":
+  version "0.8.10"
+  resolved "https://registry.yarnpkg.com/@farfetched/zod/-/zod-0.8.10.tgz#faa635b6717825cb92985f058ee5c659ae2b3795"
+  integrity sha512-H3nyjTpNH/BOLSmippdlpW9WHWlpliJGMuFkgFJ36o/we/6F5tKRTYALy1XpwermEZMdB4fKJHvr8xGNOaejWQ==
+
 "@jridgewell/gen-mapping@^0.3.0", "@jridgewell/gen-mapping@^0.3.2":
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/@jridgewell/gen-mapping/-/gen-mapping-0.3.3.tgz#7e02e6eb5df901aaedb08514203b096614024098"
@@ -947,6 +952,11 @@ path-to-regexp@^6.2.0:
   resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-6.2.1.tgz#d54934d6798eb9e5ef14e7af7962c945906918e5"
   integrity sha512-JLyh7xT1kizaEvcaXOQwOc2/Yhw6KZOvPf1S8401UyLk86CU79LN3vl7ztXGm/pZ+YjoyAJ4rxmHwbkBXJX+yw==
 
+patronum@^1.17.0:
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/patronum/-/patronum-1.17.0.tgz#ebaa05e863b9715f27a2b5397024f69e5dea55e7"
+  integrity sha512-FCcbjJ52ELV5ikaqURjniCEV4IfrtBP6BSOBpmP7iCvC9seo83YjymSfxaaRBG5vkn/HRKf/5SDpHangJylBKw==
+
 picocolors@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.0.tgz#cb5bdc74ff3f51892236eaf79d68bc44564ab81c"
@@ -1252,3 +1262,8 @@ yaml@^2.1.1:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.2.2.tgz#ec551ef37326e6d42872dad1970300f8eb83a073"
   integrity sha512-CBKFWExMn46Foo4cldiChEzn7S7SRV+wqiluAb6xmueD/fGyRHIhX8m14vVGgeFWjN540nKCNVj6P21eQjgTuA==
+
+zod@^3.21.4:
+  version "3.21.4"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.21.4.tgz#10882231d992519f0a10b5dd58a38c9dabbb64db"
+  integrity sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==

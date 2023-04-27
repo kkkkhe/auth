@@ -10,13 +10,16 @@
   },
   "dependencies": {
     "@farfetched/core": "^0.8.10",
+    "@farfetched/zod": "^0.8.10",
     "atomic-router": "^0.8.0",
     "atomic-router-react": "^0.8.1",
     "effector": "^22.8.1",
     "effector-react": "^22.5.1",
     "history": "^5.3.0",
+    "patronum": "^1.17.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",

@@ -35,13 +35,15 @@ export class AuthController {
   @Post('signup')
   @UsePipes(ZodValidationPipe)
   async signup(@Body() userCredentials: UserCredentialDto, @Session() session) {
-    const data = await this.authService.signup(userCredentials);
-    session.refresh_token = data.refresh_token;
-    return AuthResponseDto.create(data);
-  }
-  @Get('test')
-  test(){
-    return true
+    // const data = await this.authService.signup(userCredentials);
+    // session.refresh_token = data.refresh_token;
+    // return AuthResponseDto.create(data);
+    return {
+      id: 1,
+      name: 'Denis',
+      email: 'aiosdjfoasdf@gmil.com',
+      access_token: 'pwjij23ioj4023i23jmojfdios0f'
+    }
   }
   @Post('signin')
   @UsePipes(ZodValidationPipe)
