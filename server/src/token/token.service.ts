@@ -1,7 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { sign, verify, decode } from 'jsonwebtoken';
 import { UserService } from '../user/user.service';
-import { UserCredentialDto } from '../auth/dto/user-credentials.dto';
 import { UserDto } from '../user/dto/user.dto';
 @Injectable()
 export class TokenService {
@@ -13,6 +12,7 @@ export class TokenService {
     const refresh_token = sign(data, process.env.REFRESH_SECRET, {
       expiresIn: '15d',
     });
+
     return {
       access_token,
       refresh_token,
@@ -36,7 +36,7 @@ export class TokenService {
       refresh_token,
     }
   }
-  verifyAccessToken(token: string): UserCredentialDto {
+  verifyAccessToken(token: string): UserDto {
     const data = verify(token, process.env.JWT_SECRET);
     if (data) {
       return UserDto.create(data);
@@ -45,6 +45,7 @@ export class TokenService {
   }
   verifyRefreshToken(token: string) {
     const data = verify(token, process.env.REFRESH_SECRET);
+    console.log(data)
     if (data) {
       return UserDto.create(data);
     }

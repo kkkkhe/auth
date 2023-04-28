@@ -5,11 +5,11 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prismaConfig/prisma.service';
 import { UserService } from '../user/user.service';
-import { UserCredentialDto } from './dto/user-credentials.dto';
+import { SignupCredentialsDto } from './dto/signup-credentials.dto';
 import { comparePassword, hashPassword } from '../../utils/hash-password';
 import { TokenService } from '../token/token.service';
-import {UserDto} from "../user/dto/user.dto";
-import {CreateUserDto} from "./dto/create-user.dto";
+import { UserDto } from '../user/dto/user.dto';
+import { SigninCredentialsDto } from './dto/signin-credentials.dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -17,7 +17,7 @@ export class AuthService {
     private userService: UserService,
     private tokenService: TokenService,
   ) {}
-  async signup(userCredentials: UserCredentialDto) {
+  async signup(userCredentials: SignupCredentialsDto) {
     const candidate = await this.userService.findOne({
       email: userCredentials.email,
     });
@@ -40,7 +40,7 @@ export class AuthService {
     };
   }
 
-  async signin(userCredentials: UserCredentialDto) {
+  async signin(userCredentials: SigninCredentialsDto) {
     const user = await this.userService.findOne({
       email: userCredentials.email,
     });
