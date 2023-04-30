@@ -4,7 +4,7 @@ export interface IUserService {
   findOne: (where: Prisma.userWhereInput) => Promise<user>
 }
 
-export interface UserDto {
+export interface User {
   name: string
   password: string
   email: string

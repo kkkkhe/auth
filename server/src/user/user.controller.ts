@@ -1,13 +1,29 @@
-import { Controller, Get, Param, Post, Session } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Session,
+  UseFilters,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { Routes } from '../../utils/utils';
-import { UserDto } from './types';
+import { UserDto } from './dto/user.dto';
+import { CheckTokenGuard } from '../token/check-token.guard';
+import { AllExceptionFilter } from '../../utils/filters/exeption.filter';
 @Controller(Routes.Users)
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Get('/:id')
-  async getUser(@Session() session: any, @Param('id') id: number) {
-    return this.userService.findOne({ id });
+  @UseGuards(CheckTokenGuard)
+  async getUser(
+    @Session() session: any,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    const user = await this.userService.findOne({ id });
+    return UserDto.create(user);
   }
 }

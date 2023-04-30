@@ -7,7 +7,7 @@ export class TokenService {
   constructor(private userService: UserService) {}
   generateTokens(data: any) {
     const access_token = sign(data, process.env.JWT_SECRET, {
-      expiresIn: '1h',
+      expiresIn: '3000',
     });
     const refresh_token = sign(data, process.env.REFRESH_SECRET, {
       expiresIn: '15d',
@@ -37,15 +37,24 @@ export class TokenService {
     }
   }
   verifyAccessToken(token: string): UserDto {
-    const data = verify(token, process.env.JWT_SECRET);
+    const data = verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if(err){
+        throw new UnauthorizedException()
+      }
+      return decoded
+    });
     if (data) {
       return UserDto.create(data);
     }
     return null
   }
   verifyRefreshToken(token: string) {
-    const data = verify(token, process.env.REFRESH_SECRET);
-    console.log(data)
+    const data = verify(token, process.env.REFRESH_SECRET, (err, decoded) => {
+      if(err){
+        throw new UnauthorizedException()
+      }
+      return decoded
+    });
     if (data) {
       return UserDto.create(data);
     }
