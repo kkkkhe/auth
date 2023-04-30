@@ -14,9 +14,9 @@ const contract = z.object({
 export const emailChanged = createEvent<string>()
 export const passwordChanged = createEvent<string>()
 export const submitTriggered = createEvent()
-export const $email = createStore('')
+export const $email = createStore('denzel2.denis@gmail.com')
     .on(emailChanged, (password, value) => value)
-export const $password = createStore('')
+export const $password = createStore('2j8w6d12')
     .on(passwordChanged, (password, value) => value)
 
 interface FormFields {
@@ -27,12 +27,13 @@ interface FormFields {
 
 export const $form = combine($email, $password)
 const signupContract = zodContract(contract)
-const signup = createJsonQuery({
+const signin = createJsonQuery({
     params: declareParams<FormFields>(),
     request: {
         method: 'POST',
         body: ({email, password}  ) => ({email,password}),
-        url: 'http://localhost:3000/auth/signin'
+        url: 'http://localhost:3000/auth/signin',
+        credentials: 'include'
     },
     response: {
         contract: signupContract
@@ -41,7 +42,7 @@ const signup = createJsonQuery({
 
 // put data into the store
 sample({
-    clock: signup.finished.success,
+    clock: signin.finished.success,
     fn: ({result: {user}}) => ({
         name: user.name,
         email: user.email,
@@ -50,7 +51,7 @@ sample({
     target: $sessionUser
 })
 sample({
-    clock: signup.finished.success,
+    clock: signin.finished.success,
     fn: ({result}) => result.access_token,
     target: $sessionToken
 })
@@ -60,5 +61,5 @@ sample({
     clock: submitTriggered,
     source: $form,
     fn: ([email, password]) => ({email, password}),
-    target: signup.start
+    target: signin.start
 })

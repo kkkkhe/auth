@@ -37,7 +37,8 @@ const signup = createJsonQuery({
     request: {
         method: 'POST',
         body: ({name, email, password}  ) => ({name,email,password}),
-        url: 'http://localhost:3000/auth/signup'
+        url: 'http://localhost:3000/auth/signup',
+        credentials: 'include'
     },
     response: {
         contract: signupContract

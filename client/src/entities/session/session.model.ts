@@ -1,5 +1,6 @@
-import {createStore} from "effector";
+import {createEvent, createStore} from "effector";
 import {debug} from "patronum";
+
 
 interface SessionUser {
     id: number
@@ -8,6 +9,7 @@ interface SessionUser {
 
 }
 
+// move probably to entity/user
 export const $sessionUser = createStore<SessionUser>({} as SessionUser)
 
 debug($sessionUser)

@@ -1,29 +1,42 @@
-import {Contract, createJsonQuery} from "@farfetched/core";
+import {Contract, createJsonQuery, declareParams, Query} from "@farfetched/core";
 import {createEffect} from "effector";
+import {$sessionToken} from "@/entities/session";
 
-export const baseQueryFx = createEffect(async (
-    {
+export const baseQuery = <T>({
         method = 'GET',
         query,
         body,
         headers,
-        contract
+        contract,
+        params
     }: {
         method?: 'GET' | 'POST',
         query?: string,
         body?: any,
-        headers: Record<string, string | string[]>,
-        contract: Contract<unknown, any>
+        headers?: Record<string, string | string[]>,
+        contract: Contract<unknown, any>,
+        params?:  any
     }) => {
-    const result = createJsonQuery({
+    return createJsonQuery({
+        params: declareParams(),
         request: {
             method,
-            url: `http://localhost:3000/${query}`,
+            url: () => {
+                console.log(params)
+                const urlParams = new URLSearchParams(params)
+                console.log(urlParams.has('token'))
+                return `http://localhost:3000/users/1`
+            },
             body,
-            headers
+            headers: {
+                source: $sessionToken,
+                fn: (data, token) => ({
+                    'Authorization': `Bearer ${token}`,
+                    ...headers
+                })
+            }
         },
         response: {
             contract
         }
-    })
-})
+    })}
