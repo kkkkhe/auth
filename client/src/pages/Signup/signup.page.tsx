@@ -1,5 +1,5 @@
 import {Link} from "atomic-router-react";
-import {signupRouter} from "@/shared/router/routes";
+import {signinRouter, signupRouter} from "@/shared/router/routes";
 import {useUnit} from "effector-react";
 import {
     $email,
@@ -21,17 +21,21 @@ const handleSubmit = (event:FormEvent<HTMLFormElement>) => {
 export const SignupPage = () => {
     const [nameValue, emailValue, passwordValue] = useUnit([$name, $email, $password])
     return (
-        <div className={'flex flex-col w-full items-center justify-center h-screen'}>
-            <div>Signup page</div>
-                <Link to={signupRouter.homeRoute}>
-                    go to home page
-                </Link>
-            <form className={'flex flex-col gap-2 max-w-[400px] w-full'} action="" onSubmit={handleSubmit}>
-                <Input value={nameValue} action={nameChanged} placeholder={'name'}/>
-                <Input value={emailValue} action={emailChanged} placeholder={'email'}/>
-                <Input value={passwordValue} action={passwordChanged} placeholder={'password'}/>
-                <button>Submit</button>
-            </form>
+        <div className={'w-full h-screen flex items-center justify-center'}>
+            <div className={'bg-[#A6D0DD] p-5 w-full max-w-[400px] rounded-[5px]'}>
+                <div className={'flex justify-between mb-5'}>
+                    <div>Signup</div>
+                        <Link to={signupRouter.homeRoute}>
+                            home
+                        </Link>
+                </div>
+                <form className={'flex flex-col gap-2 w-full'} action="" onSubmit={handleSubmit}>
+                    <Input value={nameValue} action={nameChanged} placeholder={'name'}/>
+                    <Input value={emailValue} action={emailChanged} placeholder={'email'}/>
+                    <Input value={passwordValue} action={passwordChanged} placeholder={'password'}/>
+                    <button>Submit</button>
+                </form>
+            </div>
         </div>
     )
 }

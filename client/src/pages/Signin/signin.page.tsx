@@ -13,14 +13,18 @@ const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 export const SigninPage = () => {
         const [emailValue, passwordValue] = useUnit($form)
     return (
-        <div className={'w-full h-screen flex flex-col items-center justify-center'}>
-            <div>Signin Page</div>
-            <Link to={signinRouter.homeRoute}>go to home page</Link>
-            <form className={'flex flex-col gap-2 max-w-[400px] w-full'} action="" onSubmit={handleSubmit}>
-                <Input value={emailValue} action={emailChanged} placeholder={'email'}/>
-                <Input value={passwordValue} action={passwordChanged} placeholder={'password'}/>
-                <button>Submit</button>
-            </form>
+        <div className={'w-full h-screen flex items-center justify-center'}>
+            <div className={'bg-[#A6D0DD] p-5 w-full max-w-[400px] rounded-[5px]'}>
+                <div className={'flex justify-between mb-5'}>
+                    <div>Signin</div>
+                    <Link to={signinRouter.homeRoute}>home</Link>
+                </div>
+                <form className={'flex flex-col gap-2 w-full'} action="" onSubmit={handleSubmit}>
+                    <Input value={emailValue} action={emailChanged} placeholder={'email'}/>
+                    <Input value={passwordValue} action={passwordChanged} placeholder={'password'}/>
+                    <button>Submit</button>
+                </form>
+            </div>
         </div>
     )
 }
