@@ -3,6 +3,9 @@ import {zodContract} from "@farfetched/zod";
 import {combine, createEvent, createStore, sample} from "effector";
 import {z} from 'zod'
 import {$sessionToken, $sessionUser} from "@/entities/session";
+import {authQuery} from "@/shared/lib/auth-query";
+import {$token} from "@/shared/api/access-token";
+import {debug} from "patronum";
 const contract = z.object({
     user: z.object({
         id: z.number(),
@@ -26,7 +29,7 @@ interface FormFields {
 
 
 export const $form = combine($email, $password)
-const signupContract = zodContract(contract)
+const signinContract = zodContract(contract)
 const signin = createJsonQuery({
     params: declareParams<FormFields>(),
     request: {
@@ -36,26 +39,21 @@ const signin = createJsonQuery({
         credentials: 'include'
     },
     response: {
-        contract: signupContract
+        contract: signinContract
     }
 })
-
 // put data into the store
 sample({
     clock: signin.finished.success,
-    fn: ({result: {user}}) => ({
-        name: user.name,
-        email: user.email,
-        id: user.id
-    }),
+    fn: ({result}) => result.user,
     target: $sessionUser
 })
 sample({
     clock: signin.finished.success,
     fn: ({result}) => result.access_token,
-    target: $sessionToken
+    target: $token
 })
-
+debug(submitTriggered)
 
 sample({
     clock: submitTriggered,

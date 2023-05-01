@@ -1,42 +1,47 @@
 import {Contract, createJsonQuery, declareParams, Query} from "@farfetched/core";
 import {createEffect} from "effector";
 import {$sessionToken} from "@/entities/session";
+interface Request {
+    url: string,
+    method?: 'GET' | 'POST',
+    headers?: Record<string, string | string[]>,
+    body?: any,
+}
+interface Response {
+    contract: Contract<unknown, any>,
+}
 
-export const baseQuery = <T>({
-        method = 'GET',
+export const baseQuery = async ({
+        method,
         query,
         body,
         headers,
-        contract,
-        params
+        params,
+        token
     }: {
         method?: 'GET' | 'POST',
         query?: string,
         body?: any,
         headers?: Record<string, string | string[]>,
-        contract: Contract<unknown, any>,
-        params?:  any
+        params?:  any,
+        token: string | null
     }) => {
-    return createJsonQuery({
-        params: declareParams(),
-        request: {
+        const res = await fetch(`http://localhost:3000/${query}`, {
             method,
-            url: () => {
-                console.log(params)
-                const urlParams = new URLSearchParams(params)
-                console.log(urlParams.has('token'))
-                return `http://localhost:3000/users/1`
-            },
             body,
-            headers: {
-                source: $sessionToken,
-                fn: (data, token) => ({
-                    'Authorization': `Bearer ${token}`,
-                    ...headers
-                })
-            }
-        },
-        response: {
-            contract
+            credentials: 'include',
+            headers: prepareHeaders(headers, token)
+        })
+        if(res.ok){
+            const data = await res.json()
+            return data
         }
-    })}
+        throw new Error()
+    }
+
+    function prepareHeaders(header?: Record<string, string | string[]>, token?: string | null){
+        if(!header){
+            return {'Authorization': `Bearer ${token}`}
+        }
+        return {'Authorization': `Bearer ${token}`, ...header}
+    }

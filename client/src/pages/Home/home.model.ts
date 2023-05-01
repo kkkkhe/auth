@@ -4,6 +4,7 @@ import {baseQuery} from "@/shared/lib/base-query";
 import {debug} from "patronum";
 import {createEvent, sample} from "effector";
 import {$sessionToken} from "@/entities/session";
+import {authQuery} from "@/shared/lib/auth-query";
 
 const UserSchema = z.object({
     id: z.number(),
@@ -22,23 +23,35 @@ const userZodContract = zodContract(UserSchema)
 //         contract: userZodContract
 //     }
 // })
-const userQuery = baseQuery({
-    query: 'users',
-    contract: userZodContract,
-    params: {id: 1},
-})
-debug(userQuery.finished.failure)
 
 export const getUserTriggered = createEvent<{id: number}>()
+
+const userQuery = authQuery({
+    request: {
+        query: 'users/1',
+        method: 'GET'
+    },
+    response: {
+        contract: userZodContract,
+        mapData: (data) => data
+    }
+})
+
 sample({
     clock: getUserTriggered,
-    source: $sessionToken,
-    fn: (token, {id}) => {
-        return {
-            token,
-            id
-        }
-    },
     target: userQuery.start
 })
-debug(userQuery.$data)
+
+
+// sample({
+//     clock: getUserTriggered,
+//     source: $sessionToken,
+//     fn: (token, {id}) => {
+//         return {
+//             token,
+//             id
+//         }
+//     },
+//     target: userQuery.start
+// })
+// debug(userQuery.$data)

@@ -2,7 +2,8 @@ import {z} from "zod";
 import {zodContract} from "@farfetched/zod";
 import {createJsonQuery} from "@farfetched/core";
 import {createEvent, sample} from "effector";
-import {$sessionToken, $sessionUser} from "@/entities/session";
+import {$sessionUser} from "@/entities/session";
+import {$token} from "@/shared/api/access-token";
 export const appStarted = createEvent()
 
 const contract = z.object({
@@ -38,5 +39,5 @@ sample({
 sample({
     clock: refresh.finished.success,
     fn: ({result}) => result.access_token,
-    target: $sessionToken
+    target: $token
 })
