@@ -12,17 +12,6 @@ const UserSchema = z.object({
     email: z.string().email(),
 })
 const userZodContract = zodContract(UserSchema)
-// const getUser = createJsonQuery({
-//     params: declareParams<{id: number, token: string | null}>(),
-//     request: {
-//         method: 'GET',
-//         headers: ({token}) => ({'Authorization':`Bearer ${token}`}),
-//         url:( {id}) => `http://localhost:3000/users/${id}`,
-//     },
-//     response: {
-//         contract: userZodContract
-//     }
-// })
 
 export const getUserTriggered = createEvent<{id: number}>()
 
@@ -36,7 +25,7 @@ const userQuery = authQuery({
         mapData: (data) => data
     }
 })
-
+debug(userQuery.$data)
 sample({
     clock: getUserTriggered,
     target: userQuery.start
