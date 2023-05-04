@@ -2,7 +2,13 @@ import {createJsonQuery, declareParams} from "@farfetched/core";
 import {zodContract} from "@farfetched/zod";
 import {combine, createEvent, createStore, sample} from "effector";
 import {z} from 'zod'
-import {$sessionToken, $sessionUser} from "@/entities/session";
+import {$sessionUser} from "@/entities/session";
+import {$token} from "@/shared/api/access-token";
+import {createPageRoute} from "@/shared/lib/create-page-route";
+import {signupRouter} from "@/shared/router/routes";
+import {chainAnonymous} from "@/entities/session/chain-anonymous";
+import {lazy} from "react";
+const SignupPage = lazy(() => import('./signup.page'))
 const contract = z.object({
     user: z.object({
         name: z.string(),
@@ -11,6 +17,8 @@ const contract = z.object({
     }),
     access_token: z.string()
 });
+const chainAnonymousRoute = chainAnonymous({route: signupRouter.route})
+export const SignupRoute = createPageRoute({view: SignupPage, route: chainAnonymousRoute})
 export const nameChanged = createEvent<string>()
 export const emailChanged = createEvent<string>()
 export const passwordChanged = createEvent<string>()
@@ -57,7 +65,7 @@ sample({
 sample({
     clock: signup.finished.success,
     fn: ({result}) => result.access_token,
-    target: $sessionToken
+    target: $token
 })
 
 

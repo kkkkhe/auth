@@ -1,7 +1,7 @@
 import {Contract, createHeadlessQuery, DynamicallySourcedField} from "@farfetched/core";
 import {baseQuery} from "@/shared/lib/base-query";
 import {createEffect} from "effector/effector.umd";
-import {$token, tokenSet} from "@/shared/api/access-token";
+import {$token, tokenReceived} from "@/shared/api/access-token";
 import {attach} from "effector";
 
 interface Request {
@@ -50,7 +50,7 @@ export const authQuery = ({request, response}:{request: Request, response: Respo
                 const refresh = await fetch('http://localhost:3000/refresh', {method: 'GET', credentials: 'include'})
                 const {access_token} = await refresh.json() as Refresh
                 if(access_token){
-                    tokenSet(access_token)
+                    tokenReceived(access_token)
                     const res = await baseQuery({
                         query:request.query,
                         headers: request.headers,

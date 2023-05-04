@@ -10,7 +10,7 @@ const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     submitTriggered()
 }
 
-export const SigninPage = () => {
+const SigninPage = () => {
         const [emailValue, passwordValue] = useUnit($form)
     return (
         <div className={'w-full h-screen flex items-center justify-center'}>
@@ -28,3 +28,4 @@ export const SigninPage = () => {
         </div>
     )
 }
+export default SigninPage

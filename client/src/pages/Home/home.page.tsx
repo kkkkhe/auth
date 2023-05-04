@@ -4,7 +4,7 @@ import {getUserTriggered} from "@/pages/Home/home.model";
 
 
 
-export const HomePage = () => {
+const HomePage = () => {
     return (
             <div className={'bg-[#A6D0DD] flex w-full justify-between p-5 text-lg'}>
                 <button onClick={() => getUserTriggered({id: 1})}>Get user</button>
@@ -20,3 +20,5 @@ export const HomePage = () => {
             </div>
     )
 }
+
+export default HomePage

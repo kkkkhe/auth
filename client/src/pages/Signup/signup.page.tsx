@@ -1,5 +1,5 @@
 import {Link} from "atomic-router-react";
-import {signinRouter, signupRouter} from "@/shared/router/routes";
+import {signupRouter} from "@/shared/router/routes";
 import {useUnit} from "effector-react";
 import {
     $email,
@@ -11,14 +11,14 @@ import {
     submitTriggered
 } from "@/pages/Signup/signup.model";
 import {Input} from "@/shared/ui/input";
-import {FormEvent, FormEventHandler} from "react";
+import {FormEvent} from "react";
 
 const handleSubmit = (event:FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     submitTriggered()
 };
 
-export const SignupPage = () => {
+const SignupPage = () => {
     const [nameValue, emailValue, passwordValue] = useUnit([$name, $email, $password])
     return (
         <div className={'w-full h-screen flex items-center justify-center'}>
@@ -39,3 +39,4 @@ export const SignupPage = () => {
         </div>
     )
 }
+export default SignupPage

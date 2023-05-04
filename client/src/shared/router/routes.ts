@@ -3,7 +3,7 @@ import {createRoute} from "atomic-router";
 const homeRoute = createRoute()
 const signinRoute = createRoute()
 const signupRoute = createRoute()
-const profileRoute = createRoute()
+export const profileRoute = createRoute()
 export const homeRouter = {
     route: homeRoute,
     signinRoute,

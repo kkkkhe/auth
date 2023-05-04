@@ -1,4 +1,4 @@
-import {createRoutesView, RoutesViewConfig} from "atomic-router-react"
+import {createRoutesView} from "atomic-router-react"
 import {HomeRoute} from "@/pages/Home";
 import {SigninRoute} from "@/pages/Signin";
 import {ProfileRoute} from "@/pages/Profile";

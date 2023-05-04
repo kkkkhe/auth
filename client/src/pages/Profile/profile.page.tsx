@@ -1,8 +1,7 @@
 import {Link} from "atomic-router-react";
-import {homeRouter, profileRouter} from "@/shared/router/routes";
-import {getUserTriggered} from "@/pages/Home/home.model";
+import {profileRouter} from "@/shared/router/routes";
 
-export const ProfilePage = () => {
+const ProfilePage = () => {
     return (
         <div>
             <div className={'bg-[#A6D0DD] flex w-full justify-between p-5 text-lg'}>
@@ -14,3 +13,4 @@ export const ProfilePage = () => {
         </div>
     )
 }
+export default ProfilePage
