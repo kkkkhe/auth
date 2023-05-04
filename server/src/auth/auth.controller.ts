@@ -13,7 +13,6 @@ import { ZodValidationPipe } from 'nestjs-zod';
 import { TokenService } from '../token/token.service';
 import { SignupCredentialsDto } from './dto/signup-credentials.dto';
 import { SigninCredentialsDto } from './dto/signin-credentials.dto';
-
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -36,5 +35,11 @@ export class AuthController {
     const data = await this.authService.signin(userCredentials);
     req.session['refresh_token'] = data.refresh_token
     return AuthResponseDto.create(data);
+  }
+
+  @Post('logout')
+  async logout(@Req() req: Request) {
+    req.session['refresh_token'] = null
+    return
   }
 }

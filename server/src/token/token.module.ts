@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TokenService } from './token.service';
 import { UserModule } from '../user/user.module';
 import { TokenController } from './token.controller';
@@ -9,8 +9,4 @@ import { TokenController } from './token.controller';
   providers: [TokenService],
   exports: [TokenService],
 })
-export class TokenModule {
-  // configure(consumer: MiddlewareConsumer) {
-  //   consumer.apply(CheckTokenMiddleware).forRoutes('*');
-  // }
-}
+export class TokenModule {}

@@ -7,7 +7,7 @@ export class TokenService {
   constructor(private userService: UserService) {}
   generateTokens(data: any) {
     const access_token = sign(data, process.env.JWT_SECRET, {
-      expiresIn: '3000',
+      expiresIn: '15m',
     });
     const refresh_token = sign(data, process.env.REFRESH_SECRET, {
       expiresIn: '15d',
@@ -27,9 +27,7 @@ export class TokenService {
       throw new UnauthorizedException('User is not authorized');
     }
     const user = await this.userService.findOne({ id: userDto.id });
-    const { access_token, refresh_token } = this.generateTokens(
-      UserDto.create(user),
-    );
+    const { access_token, refresh_token } = this.generateTokens(user);
     return {
       user,
       access_token,

@@ -12,7 +12,6 @@ export class UserService implements IUserService {
     });
     return user;
   }
-
   async findOne(where: Prisma.userWhereUniqueInput): Promise<user> {
     const user = await this.prisma.user.findUnique({
       where,

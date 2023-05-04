@@ -11,8 +11,7 @@ import {
 import { UserService } from './user.service';
 import { Routes } from '../../utils/utils';
 import { UserDto } from './dto/user.dto';
-import { CheckTokenGuard } from '../token/check-token.guard';
-import { AllExceptionFilter } from '../../utils/filters/exeption.filter';
+import { CheckTokenGuard } from '../token/guards/check-token.guard';
 @Controller(Routes.Users)
 export class UserController {
   constructor(private userService: UserService) {}
