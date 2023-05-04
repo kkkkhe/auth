@@ -6,9 +6,10 @@ import {$sessionUser} from "@/entities/session";
 import {$token} from "@/shared/api/access-token";
 import {debug} from "patronum";
 import {chainAnonymous} from "@/entities/session/chain-anonymous";
-import {signinRouter} from "@/shared/router/routes";
+import {homeRouter, signinRouter} from "@/shared/router/routes";
 import {lazy} from "react";
 import {createPageRoute} from "@/shared/lib/create-page-route";
+import {redirect} from "atomic-router";
 const SigninPage = lazy(() => import('./signin.page'))
 const contract = z.object({
     user: z.object({
@@ -51,6 +52,15 @@ const signin = createJsonQuery({
         contract: signinContract
     }
 })
+
+sample({
+    clock: submitTriggered,
+    source: $form,
+    fn: ([email, password]) => ({email, password}),
+    target: signin.start
+})
+
+
 // put data into the store
 sample({
     clock: signin.finished.success,
@@ -62,11 +72,11 @@ sample({
     fn: ({result}) => result.access_token,
     target: $token
 })
-debug(submitTriggered)
-
+// redirect on success
 sample({
-    clock: submitTriggered,
-    source: $form,
-    fn: ([email, password]) => ({email, password}),
-    target: signin.start
+    clock: signin.finished.success,
+    fn: ({result}) => result.access_token,
+    target: redirect({
+        route: homeRouter.route
+    })
 })

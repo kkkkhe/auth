@@ -5,9 +5,10 @@ import {z} from 'zod'
 import {$sessionUser} from "@/entities/session";
 import {$token} from "@/shared/api/access-token";
 import {createPageRoute} from "@/shared/lib/create-page-route";
-import {signupRouter} from "@/shared/router/routes";
+import {homeRouter, signupRouter} from "@/shared/router/routes";
 import {chainAnonymous} from "@/entities/session/chain-anonymous";
 import {lazy} from "react";
+import {redirect} from "atomic-router";
 const SignupPage = lazy(() => import('./signup.page'))
 const contract = z.object({
     user: z.object({
@@ -52,6 +53,15 @@ const signup = createJsonQuery({
         contract: signupContract
     }
 })
+
+sample({
+    clock: submitTriggered,
+    source: $form,
+    fn: ([name, email, password]) => ({name, email, password}),
+    target: signup.start
+})
+
+
 // put data into the store
 sample({
     clock: signup.finished.success,
@@ -62,16 +72,18 @@ sample({
     }),
     target: $sessionUser
 })
+// set token
 sample({
     clock: signup.finished.success,
     fn: ({result}) => result.access_token,
     target: $token
 })
 
-
+// redirect on success signup
 sample({
-    clock: submitTriggered,
-    source: $form,
-    fn: ([name, email, password]) => ({name, email, password}),
-    target: signup.start
+    clock: signup.finished.success,
+    fn: ({result}) => result.access_token,
+    target: redirect({
+        route: homeRouter.route
+    })
 })
