@@ -2,13 +2,14 @@ import {createJsonQuery, declareParams} from "@farfetched/core";
 import {zodContract} from "@farfetched/zod";
 import {combine, createEvent, createStore, sample} from "effector";
 import {z} from 'zod'
-import {$sessionUser} from "@/entities/session";
-import {$token} from "@/shared/api/access-token";
+import {$isAuthorized, $sessionUser} from "@/entities/session";
+import {tokenReceived} from "@/shared/api/access-token";
 import {createPageRoute} from "@/shared/lib/create-page-route";
 import {homeRouter, signupRouter} from "@/shared/router/routes";
 import {chainAnonymous} from "@/entities/session/chain-anonymous";
 import {lazy} from "react";
 import {redirect} from "atomic-router";
+import {spread} from "patronum";
 const SignupPage = lazy(() => import('./signup.page'))
 const contract = z.object({
     user: z.object({
@@ -65,24 +66,22 @@ sample({
 // put data into the store
 sample({
     clock: signup.finished.success,
-    fn: ({result: {user}}) => ({
-        name: user.name,
-        email: user.email,
-        id: user.id
+    fn: ({result}) => ({
+        user: result.user,
+        token: result.access_token,
+        authorized: true
     }),
-    target: $sessionUser
+    target: spread({
+        targets: {
+            user: $sessionUser,
+            token: tokenReceived,
+            authorized: $isAuthorized
+        }
+    })
 })
-// set token
-sample({
-    clock: signup.finished.success,
-    fn: ({result}) => result.access_token,
-    target: $token
-})
-
 // redirect on success signup
 sample({
     clock: signup.finished.success,
-    fn: ({result}) => result.access_token,
     target: redirect({
         route: homeRouter.route
     })

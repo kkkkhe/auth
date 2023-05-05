@@ -2,9 +2,9 @@ import {createJsonQuery, declareParams} from "@farfetched/core";
 import {zodContract} from "@farfetched/zod";
 import {combine, createEvent, createStore, sample} from "effector";
 import {z} from 'zod'
-import {$sessionUser} from "@/entities/session";
-import {$token} from "@/shared/api/access-token";
-import {debug} from "patronum";
+import {$isAuthorized, $sessionUser} from "@/entities/session";
+import {tokenReceived} from "@/shared/api/access-token";
+import {spread} from "patronum";
 import {chainAnonymous} from "@/entities/session/chain-anonymous";
 import {homeRouter, signinRouter} from "@/shared/router/routes";
 import {lazy} from "react";
@@ -64,18 +64,22 @@ sample({
 // put data into the store
 sample({
     clock: signin.finished.success,
-    fn: ({result}) => result.user,
-    target: $sessionUser
-})
-sample({
-    clock: signin.finished.success,
-    fn: ({result}) => result.access_token,
-    target: $token
+    fn: ({result}) => ({
+        user: result.user,
+        token: result.access_token,
+        authorized: true
+    }),
+    target: spread({
+        targets: {
+            user: $sessionUser,
+            token: tokenReceived,
+            authorized: $isAuthorized
+        }
+    })
 })
 // redirect on success
 sample({
     clock: signin.finished.success,
-    fn: ({result}) => result.access_token,
     target: redirect({
         route: homeRouter.route
     })

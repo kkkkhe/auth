@@ -1,4 +1,4 @@
-import {createStore} from "effector";
+import {createEvent, createStore, sample} from "effector";
 
 interface SessionUser {
     id: number
@@ -6,10 +6,14 @@ interface SessionUser {
     email: string
 
 }
-
+export const resetSessionTriggered = createEvent()
 // move probably to entity/user
 export const $sessionUser = createStore<SessionUser>({} as SessionUser)
-
 export const $authDone = createStore(false)
 export const $isAuthorized = createStore(false)
-    .on($sessionUser, () => true)
+
+sample({
+    clock: resetSessionTriggered,
+    fn: () => true,
+    target: [$sessionUser.reinit!, $isAuthorized.reinit!]
+})

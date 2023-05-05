@@ -1,11 +1,13 @@
 import {z} from "zod";
 import {zodContract} from "@farfetched/zod";
-import {debug} from "patronum";
-import {createEvent, sample} from "effector";
+import {createEffect, createEvent, sample} from "effector";
 import {authQuery} from "@/shared/lib/auth-query";
 import {createPageRoute} from "@/shared/lib/create-page-route";
 import {homeRouter} from "@/shared/router/routes";
 import {lazy} from "react";
+import {createQuery} from "@farfetched/core";
+import {resetSessionTriggered} from "@/entities/session";
+import {redirect} from "atomic-router";
 const HomePage = lazy(() => import('./home.page'))
 export const HomeRoute = createPageRoute({view: HomePage, route: homeRouter.route})
 const UserSchema = z.object({
@@ -16,6 +18,7 @@ const UserSchema = z.object({
 const userZodContract = zodContract(UserSchema)
 
 export const getUserTriggered = createEvent<{id: number}>()
+export const logoutTriggered = createEvent()
 
 const userQuery = authQuery({
     request: {
@@ -27,22 +30,33 @@ const userQuery = authQuery({
         mapData: (data) => data
     }
 })
-debug(userQuery.$data)
+
+
+
 sample({
     clock: getUserTriggered,
     target: userQuery.start
 })
 
+const logoutQuery = createQuery({
+    handler: createEffect(async () => {
+        const res = await fetch('http://localhost:3000/auth/logout', {method: 'POST', credentials: 'include'})
+        return res.json()
+    })
+})
 
-// sample({
-//     clock: getUserTriggered,
-//     source: $sessionToken,
-//     fn: (token, {id}) => {
-//         return {
-//             token,
-//             id
-//         }
-//     },
-//     target: userQuery.start
-// })
-// debug(userQuery.$data)
+sample({
+    clock: logoutTriggered,
+    target: logoutQuery.start
+})
+sample({
+    clock: logoutQuery.finished.success,
+    target: resetSessionTriggered
+})
+sample({
+    clock: logoutQuery.finished.success,
+    target: redirect({
+        route: homeRouter.route
+    })
+})
+
